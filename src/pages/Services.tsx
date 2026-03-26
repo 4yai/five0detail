@@ -1,136 +1,65 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { CheckCircle, Phone, MessageSquare, Instagram, Clock, Zap } from 'lucide-react';
+import { CheckCircle, Phone, MessageSquare, Instagram, Clock, Shield } from 'lucide-react';
+
+const BOOKING_LINK =
+  'https://app.squareup.com/appointments/book/r9fqa859ot208j/LVJNFC13SX6J0/start';
 
 const Services: React.FC = () => {
   // In-view tracking for staged reveals + skeletons
   const [packagesRef, packagesInView] = useInView({ threshold: 0.1, triggerOnce: true });
   const [addonsRef, addonsInView] = useInView({ threshold: 0.1, triggerOnce: true });
 
-  // ======== Calendly Embed (stable in SPAs) ========
-  const [frameLoaded, setFrameLoaded] = useState(false);
-  const [frameHeight, setFrameHeight] = useState(900);
-  const [showRetry, setShowRetry] = useState(false);
-  const [readyToLoad, setReadyToLoad] = useState(false); // lazy-init when in view
-  const { ref: bookRef, inView: bookInView } = useInView({ threshold: 0.01, triggerOnce: true });
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
-
-  // Use actual hostname for Calendly's embed_domain
-  const embedDomain = useMemo(() => {
-    if (typeof window !== 'undefined' && window.location?.hostname) {
-      return window.location.hostname;
-    }
-    return 'chromecousinsdetailing.com';
-  }, []);
-
-  const CALENDLY_URL = useMemo(() => {
-    const base = 'https://calendly.com/built4youonline/30min';
-    const params = new URLSearchParams({
-      embed_domain: embedDomain,
-      embed_type: 'Inline',
-      hide_gdpr_banner: '1',
-    });
-    return `${base}?${params.toString()}`;
-  }, [embedDomain]);
-
-  // Responsive iframe height
-  useEffect(() => {
-    const computeHeight = () => {
-      const h = Math.max(760, Math.min(window.innerHeight - 120, 1000));
-      setFrameHeight(h);
-    };
-    computeHeight();
-    window.addEventListener('resize', computeHeight);
-    return () => window.removeEventListener('resize', computeHeight);
-  }, []);
-
-  // Honor /services#book deep link
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash === '#book') {
-      const el = document.getElementById('book');
-      if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' as ScrollLogicalPosition });
-    }
-  }, []);
-
-  // Lazy load Calendly when section enters viewport
-  useEffect(() => {
-    if (bookInView) setReadyToLoad(true);
-  }, [bookInView]);
-
-  // Show retry if iframe takes too long
-  useEffect(() => {
-    if (!readyToLoad) return;
-    setShowRetry(false);
-    const t = window.setTimeout(() => {
-      if (!frameLoaded) setShowRetry(true);
-    }, 8000);
-    return () => window.clearTimeout(t);
-  }, [readyToLoad, frameLoaded]);
-
-  const reloadIframe = () => {
-    setFrameLoaded(false);
-    setShowRetry(false);
-    if (iframeRef.current) {
-      const url = new URL(CALENDLY_URL);
-      url.searchParams.set('_cb', Date.now().toString());
-      iframeRef.current.src = url.toString();
-    }
-  };
-
   // ======== Pricing Data ========
-  const packages = [
+  const sedanPackages = [
     {
-      name: 'Basic Wash',
-      prices: { sedan: 70, suv: 70, truck: 70 },
-      features: [
-        'Foam wash & hand dry',
-        'Wheels & tires dressed',
-        'Windows cleaned (exterior)',
-        'Light interior vacuum',
-      ],
+      name: 'Patrol Package',
+      price: 89,
+      features: ['Basic wash', 'Hand dry', 'Wheels cleaned', 'Light interior vacuum'],
       popular: false,
     },
     {
-      name: 'Interior OR Exterior Only',
-      prices: { sedan: 50, suv: 50, truck: 50 },
-      features: [
-        'Choose a focused service:',
-        'Interior: vacuum, wipe-down, windows',
-        'Exterior: wash, dry, wheels, tire shine',
-      ],
+      name: 'Task Force',
+      price: 149,
+      features: ['Premium wash', 'Interior wipe-down', 'Windows cleaned', 'Tire shine'],
+      popular: true,
+    },
+  ];
+
+  const truckPackages = [
+    {
+      name: 'Interceptor',
+      price: 109,
+      features: ['Basic wash', 'Hand dry', 'Wheels cleaned', 'Light interior vacuum'],
       popular: false,
     },
     {
-      name: 'Premium Wash',
-      prices: { sedan: 120, suv: 120, truck: 120 },
-      features: [
-        'Thorough exterior decon + sealant',
-        'Full interior vacuum & wipe-down',
-        'Plastics conditioned',
-        'Windows inside & out',
-      ],
+      name: 'SWAT Team',
+      price: 179,
+      features: ['Premium wash', 'Interior wipe-down', 'Windows cleaned', 'Tire shine'],
       popular: true,
     },
   ];
 
   const addOns = [
-    { name: 'Pet Hair Removal', price: 35, description: 'Deep vacuum and lint brush treatment' },
-    { name: 'Glass Coating', price: 99, description: 'Hydrophobic coating for all windows' },
-    { name: 'Engine Bay Detail', price: 75, description: 'Complete engine compartment cleaning' },
-    { name: 'Headlight Restoration', price: 65, description: 'Remove oxidation and restore clarity' },
+    { name: 'Clay Barring', price: 49, description: 'Remove bonded contaminants from your paint for a smoother finish', comingSoon: false },
+    { name: 'K-9 Hair Sweep', price: 99, description: 'Pet hair removal and cleanup', comingSoon: false },
+    { name: 'Rain Shield Coating', price: null, description: 'Hydrophobic protection for all windows', comingSoon: true },
+    { name: 'Undercover Bay Detail', price: 99, description: 'Engine bay cleaning and dressing', comingSoon: false },
+    { name: 'Night Vision Restore', price: null, description: 'Headlight clarity restoration', comingSoon: true },
+    { name: 'Ceramic Coating', price: null, description: 'Long-term exterior protection and gloss boost', comingSoon: true },
   ];
 
-  // ======== Skeleton helpers ========
   const CardSkeleton = ({ delay = 0 }: { delay?: number }) => (
     <motion.div
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, delay }}
-      className="relative rounded-2xl p-6 bg-zinc-900 border border-white/10"
+      className="relative rounded-2xl p-6 bg-slate-950 border border-blue-400/10"
     >
       <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
-        <div className="animate-pulse w-full h-full bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900" />
+        <div className="animate-pulse w-full h-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950" />
       </div>
       <div className="relative">
         <div className="h-6 w-40 bg-white/10 rounded mb-4" />
@@ -152,7 +81,7 @@ const Services: React.FC = () => {
       initial={{ y: 24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.55, delay }}
-      className="bg-zinc-900 border border-white/10 p-6 rounded-lg"
+      className="bg-slate-950 border border-blue-400/10 p-6 rounded-lg"
     >
       <div className="animate-pulse">
         <div className="flex justify-between items-center mb-3">
@@ -165,19 +94,82 @@ const Services: React.FC = () => {
     </motion.div>
   );
 
+  const PackageCard = ({
+    pkg,
+    index,
+  }: {
+    pkg: {
+      name: string;
+      price: number;
+      features: string[];
+      popular: boolean;
+    };
+    index: number;
+  }) => (
+    <motion.div
+      key={pkg.name}
+      initial={{ y: 30, opacity: 0 }}
+      animate={packagesInView ? { y: 0, opacity: 1 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className={`relative rounded-2xl p-6 bg-slate-950 border border-blue-400/10 hover:bg-slate-900 transition-all ${
+        pkg.popular ? 'ring-2 ring-blue-500' : ''
+      }`}
+      whileHover={{ y: -5 }}
+    >
+      {pkg.popular && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+          <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-[0_0_16px_rgba(59,130,246,.35)]">
+            Top Callout
+          </span>
+        </div>
+      )}
+
+      <h3 className="text-2xl font-bold mb-4 text-center text-white">{pkg.name}</h3>
+
+      <div className="text-center mb-6">
+        <div className="text-sm text-white/60 mb-2">Starting at</div>
+        <div className="text-3xl font-extrabold text-blue-400 mb-2">${pkg.price}</div>
+      </div>
+
+      <ul className="space-y-3 mb-8">
+        {pkg.features.map((feature, i) => (
+          <li key={i} className="flex items-start text-sm text-white/90">
+            <CheckCircle className="h-4 w-4 text-blue-400 mr-2 mt-0.5 flex-shrink-0" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      <a
+        href={BOOKING_LINK}
+        target="_blank"
+        rel="noreferrer"
+        className="w-full inline-block text-center bg-blue-500 hover:bg-blue-400 text-white py-3 rounded-lg font-semibold transition-colors shadow-[0_0_16px_rgba(59,130,246,.35)]"
+      >
+        Request Service
+      </a>
+    </motion.div>
+  );
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-20 bg-black text-white">
       {/* Header */}
-      <section className="py-16 bg-gradient-to-br from-black via-zinc-900 to-black">
+      <section className="py-16 bg-gradient-to-br from-black via-slate-950 to-black border-b border-blue-500/10">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-4xl md:text-6xl font-black mb-3 tracking-tight">Packages & Booking</h1>
+            <h1 className="text-4xl md:text-6xl font-black mb-3 tracking-tight uppercase">Packages & Dispatch</h1>
             <p className="text-white/70 mb-6">
-              Serving <span className="text-white">El Paso, TX</span> and nearby areas
+              Mobile detailing on call in <span className="text-blue-400">Lawton, OK</span> and within a 60+ mile radius
             </p>
-            <div className="bg-red-600 text-black px-8 py-4 rounded-lg inline-flex items-center gap-3 text-lg font-semibold mb-2 shadow-[0_0_25px_rgba(239,68,68,.35)]">
-              <Zap className="h-6 w-6" />
-              <span>No water or power? We bring our own.</span>
+            <div className="bg-blue-500 text-white px-8 py-4 rounded-lg inline-flex items-center gap-3 text-lg font-semibold mb-4 shadow-[0_0_25px_rgba(59,130,246,.35)]">
+              <Shield className="h-6 w-6" />
+              <span>No water or power on site? Our unit brings its own.</span>
+            </div>
+            <div className="max-w-3xl mx-auto bg-slate-950 border border-blue-500/20 rounded-xl px-6 py-4">
+              <p className="text-sm md:text-base text-white/85">
+                <span className="font-bold text-blue-400">10% of proceeds</span> from every service go toward a law
+                enforcement support charity.
+              </p>
             </div>
           </motion.div>
         </div>
@@ -192,124 +184,83 @@ const Services: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold mb-4">Choose Your Package</h2>
-            <p className="text-xl text-white/70">Professional detailing delivered to your location</p>
+            <h2 className="text-3xl font-bold mb-4 uppercase">Choose Your Service Level</h2>
+            <p className="text-xl text-white/70">Straightforward packages based on vehicle size and mission level</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Show skeletons until packages section is in view */}
-            {!packagesInView
-              ? [0, 1, 2].map((i) => <CardSkeleton key={`pkg-skel-${i}`} delay={i * 0.1} />)
-              : packages.map((pkg, index) => (
-                  <motion.div
-                    key={pkg.name}
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={packagesInView ? { y: 0, opacity: 1 } : {}}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className={`relative rounded-2xl p-6 bg-zinc-900 border border-white/10 hover:bg-zinc-800 transition-all ${
-                      pkg.popular ? 'ring-2 ring-red-500' : ''
-                    }`}
-                    whileHover={{ y: -5 }}
-                  >
-                    {pkg.popular && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                        <span className="bg-red-600 text-black px-4 py-1 rounded-full text-sm font-semibold shadow-[0_0_16px_rgba(239,68,68,.35)]">
-                          Most Popular
-                        </span>
-                      </div>
-                    )}
-
-                    <h3 className="text-2xl font-bold mb-4 text-center">{pkg.name}</h3>
-
-                    <div className="text-center mb-6">
-                      <div className="text-sm text-white/60 mb-2">Flat price</div>
-                      <div className="text-3xl font-extrabold text-red-500 mb-2">${pkg.prices.sedan}</div>
-                      <div className="text-xs text-white/50">Same price for sedan, SUV, or truck</div>
-                    </div>
-
-                    <ul className="space-y-3 mb-8">
-                      {pkg.features.map((feature, i) => (
-                        <li key={i} className="flex items-start text-sm">
-                          <CheckCircle className="h-4 w-4 text-emerald-500 mr-2 mt-0.5 flex-shrink-0" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <a
-                      href="tel:9153185633"
-                      className="w-full inline-block text-center bg-red-600 hover:bg-red-500 text-black py-3 rounded-lg font-semibold transition-colors shadow-[0_0_16px_rgba(239,68,68,.35)]"
-                    >
-                      Call to Book
-                    </a>
-                  </motion.div>
+          {!packagesInView ? (
+            <>
+              <div className="text-center mb-8">
+                <div className="h-8 w-64 bg-white/10 rounded mx-auto animate-pulse" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+                {[0, 1].map((i) => (
+                  <CardSkeleton key={`sedan-skel-${i}`} delay={i * 0.1} />
                 ))}
-          </div>
-        </div>
-      </section>
+              </div>
 
-      {/* Online Booking (Calendly via iframe) */}
-      <section id="book" ref={bookRef} className="py-16 bg-zinc-950">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold mb-4">Book Online</h2>
-            <p className="text-white/70">Choose a time that works for you. Bookings sync to our calendar instantly.</p>
-          </div>
-
-          {/* Skeleton Loader for Calendly */}
-          {!frameLoaded && (
-            <div className="w-full max-w-4xl mx-auto mb-6 rounded-xl border border-white/10 bg-white/5 overflow-hidden">
-              <div className="animate-pulse h-[700px] sm:h-[800px] md:h-[900px] bg-gradient-to-r from-zinc-800 via-zinc-700 to-zinc-800" />
-            </div>
-          )}
-
-          <div className="w-full max-w-4xl mx-auto rounded-2xl overflow-hidden border border-white/10">
-            {readyToLoad && (
-              <iframe
-                ref={iframeRef}
-                key={`cal-iframe-${embedDomain}`}
-                title="Schedule with Chrome Cousins Detailing"
-                src={CALENDLY_URL}
-                onLoad={() => setFrameLoaded(true)}
-                loading="lazy"
-                style={{ width: '100%', height: `${frameHeight}px`, border: '0', display: 'block' }}
-                allow="clipboard-read; clipboard-write"
-                scrolling="no"
-              />
-            )}
-          </div>
-
-          <div className="text-center mt-4 space-x-3">
-            {showRetry && (
-              <button
-                onClick={reloadIframe}
-                className="inline-block px-5 py-3 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-white/90"
+              <div className="text-center mb-8">
+                <div className="h-8 w-64 bg-white/10 rounded mx-auto animate-pulse" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {[0, 1].map((i) => (
+                  <CardSkeleton key={`truck-skel-${i}`} delay={i * 0.1} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={packagesInView ? { y: 0, opacity: 1 } : {}}
+                transition={{ duration: 0.5 }}
+                className="text-center mb-8"
               >
-                Reload scheduler
-              </button>
-            )}
-            <a
-              href="https://calendly.com/bbuilt4youonline/30min"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block px-5 py-3 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-white/90"
-            >
-              Open in Calendly
-            </a>
-          </div>
+                <div className="inline-flex items-center gap-4 mb-3">
+                  <div className="h-px w-12 bg-blue-500/60" />
+                  <h3 className="text-2xl md:text-3xl font-bold uppercase">Sedans & Coupes</h3>
+                  <div className="h-px w-12 bg-blue-500/60" />
+                </div>
+              </motion.div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+                {sedanPackages.map((pkg, index) => (
+                  <PackageCard key={pkg.name} pkg={pkg} index={index} />
+                ))}
+              </div>
+
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={packagesInView ? { y: 0, opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-center mb-8"
+              >
+                <div className="inline-flex items-center gap-4 mb-3">
+                  <div className="h-px w-12 bg-blue-500/60" />
+                  <h3 className="text-2xl md:text-3xl font-bold uppercase">Trucks & SUVs</h3>
+                  <div className="h-px w-12 bg-blue-500/60" />
+                </div>
+              </motion.div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {truckPackages.map((pkg, index) => (
+                  <PackageCard key={pkg.name} pkg={pkg} index={index + 2} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
 
       {/* Add-ons */}
-      <section ref={addonsRef} className="py-16 bg-zinc-950">
+      <section ref={addonsRef} className="py-16 bg-slate-950 border-y border-blue-500/10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Add-On Services</h2>
-            <p className="text-xl text-white/70">Customize your detail with additional services</p>
+            <h2 className="text-3xl font-bold mb-4 uppercase">Special Ops Add-Ons</h2>
+            <p className="text-xl text-white/70">Optional upgrades to tighten up the final result</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Show skeletons until add-ons section is in view */}
             {!addonsInView
               ? Array.from({ length: 6 }).map((_, i) => <AddonSkeleton key={`addon-skel-${i}`} delay={0.1 + i * 0.06} />)
               : addOns.map((addon, index) => (
@@ -318,12 +269,18 @@ const Services: React.FC = () => {
                     initial={{ y: 30, opacity: 0 }}
                     animate={addonsInView ? { y: 0, opacity: 1 } : {}}
                     transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                    className="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:bg-zinc-800 transition-colors"
+                    className="bg-black border border-blue-500/15 p-6 rounded-lg hover:bg-slate-900 transition-colors"
                     whileHover={{ y: -3 }}
                   >
-                    <div className="flex justify-between items-center mb-3">
+                    <div className="flex justify-between items-center mb-3 gap-3">
                       <h3 className="text-lg font-semibold">{addon.name}</h3>
-                      <span className="text-xl font-bold text-red-500">+${addon.price}</span>
+                      {addon.comingSoon ? (
+                        <span className="text-sm font-bold uppercase tracking-[0.08em] text-blue-300 bg-blue-500/10 border border-blue-400/20 px-3 py-1 rounded-full">
+                          Coming Soon
+                        </span>
+                      ) : (
+                        <span className="text-xl font-bold text-blue-400">+${addon.price}</span>
+                      )}
                     </div>
                     <p className="text-white/70 text-sm">{addon.description}</p>
                   </motion.div>
@@ -333,65 +290,65 @@ const Services: React.FC = () => {
       </section>
 
       {/* Contact / Info */}
-      <section className="py-16 bg-zinc-950">
+      <section className="py-16 bg-slate-950 border-t border-blue-500/10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <Phone className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Call Us</h3>
-              <a href="tel:9153185633" className="text-red-500 hover:text-red-400 text-lg font-medium">
+              <Phone className="h-12 w-12 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 uppercase">Call Dispatch</h3>
+              <a href="tel:9153185633" className="text-blue-400 hover:text-blue-300 text-lg font-medium">
                 (915) 318-5633
               </a>
             </div>
 
             <div className="text-center">
-              <MessageSquare className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Text Us</h3>
-              <a href="sms:9153185633" className="text-red-500 hover:text-red-400 text-lg font-medium">
-                (915) 318-5633
+              <MessageSquare className="h-12 w-12 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 uppercase">Text Dispatch</h3>
+              <a href="sms:9153185633" className="text-blue-400 hover:text-blue-300 text-lg font-medium">
+                (609) 364-9259
               </a>
             </div>
 
             <div className="text-center">
-              <Clock className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Business Hours</h3>
-              <p className="text-white/70">Mon-Sat: 8AM-6PM</p>
-              <p className="text-white/70">Sunday: By Appointment</p>
+              <Clock className="h-12 w-12 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 uppercase">Hours of Operation</h3>
+              <p className="text-white/70">Weekends: 7AM-7PM</p>
+              <p className="text-white/70">Weekdays: By Call</p>
             </div>
 
             <div className="text-center">
-              <Instagram className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Follow Us</h3>
+              <Instagram className="h-12 w-12 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 uppercase">Follow the Unit</h3>
               <div className="space-x-4">
                 <a
                   href="https://www.instagram.com/chromecousins_detailing/"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-red-500 hover:text-red-400"
+                  className="text-blue-400 hover:text-blue-300"
                 >
                   Instagram
                 </a>
-                <a href="#" className="text-red-500 hover:text-red-400">
+                <a href="#" className="text-blue-400 hover:text-blue-300">
                   TikTok
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 bg-zinc-900 border border-white/10 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-center">Service Policies</h3>
+          <div className="mt-12 bg-black border border-blue-500/15 rounded-lg p-6">
+            <h3 className="text-xl font-semibold mb-4 text-center uppercase">Service Policies</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
               <div>
-                <h4 className="font-semibold mb-2 text-red-500">Deposit Policy</h4>
-                <p className="text-sm text-white/70">50% deposit required to secure appointment</p>
+                <h4 className="font-semibold mb-2 text-blue-400 uppercase">Booking Policy</h4>
+                <p className="text-sm text-white/70">25% deposit required to secure your service window</p>
               </div>
               <div>
-                <h4 className="font-semibold mb-2 text-red-500">Service Radius</h4>
-                <p className="text-sm text-white/70">25-mile radius from El Paso, TX</p>
+                <h4 className="font-semibold mb-2 text-blue-400 uppercase">Patrol Radius</h4>
+                <p className="text-sm text-white/70">60+ mile radius from Lawton, OK</p>
               </div>
               <div>
-                <h4 className="font-semibold mb-2 text-red-500">Weather Policy</h4>
-                <p className="text-sm text-white/70">Services rescheduled for severe weather</p>
+                <h4 className="font-semibold mb-2 text-blue-400 uppercase">Weather Hold</h4>
+                <p className="text-sm text-white/70">Services rescheduled for severe weather conditions</p>
               </div>
             </div>
           </div>
