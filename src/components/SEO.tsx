@@ -4,32 +4,40 @@ import { useLocation } from 'react-router-dom';
 
 const SEO: React.FC = () => {
   const location = useLocation();
-  
+
   const getPageData = () => {
     switch (location.pathname) {
       case '/':
         return {
-          title: 'Chrome Cousins - Premium Mobile Car Detailing | We Come To You',
-          description: 'Professional mobile car detailing services delivered to your door. Interior, exterior, and ceramic coating packages. Fully insured with satisfaction guarantee.',
-          keywords: 'mobile car detailing, car wash, ceramic coating, auto detailing, mobile service'
+          title: 'FIVE-0 Auto Detail | Mobile Detailing Oklahoma | We Come To You',
+          description:
+            'FIVE-0 Auto Detail delivers premium mobile detailing across Oklahoma. Interior, exterior, stain extraction, and full vehicle resets brought directly to you.',
+          keywords:
+            'mobile detailing Oklahoma, car detailing Lawton OK, auto detailing, interior detail, exterior detail, stain extraction, mobile car wash'
         };
       case '/services':
         return {
-          title: 'Car Detailing Packages & Booking | Chrome Cousins Mobile Detailing',
-          description: 'Choose from Basic, Deluxe, Ultimate, and Ceramic packages. Book your mobile car detailing service online. We bring water, power, and professional equipment.',
-          keywords: 'car detailing packages, mobile detailing booking, ceramic coating, interior detailing'
+          title: 'Detailing Packages & Booking | FIVE-0 Auto Detail',
+          description:
+            'Choose from Patrol, Task Force, Interceptor, and SWAT packages. Mobile detailing with water and power included. Book your vehicle reset today.',
+          keywords:
+            'car detailing packages Oklahoma, mobile detailing booking, truck detailing, sedan detailing, premium car detail'
         };
       case '/results':
         return {
-          title: 'Before & After Results | Chrome Cousins Mobile Detailing - Gallery',
-          description: 'See stunning before and after results from our mobile car detailing services. Over 500 cars detailed on-site with guaranteed satisfaction.',
-          keywords: 'car detailing results, before after photos, mobile detailing gallery'
+          title: 'Before & After Results | FIVE-0 Auto Detail',
+          description:
+            'See real before and after transformations from our mobile detailing services. Interior resets, exterior cleaning, and full vehicle recoveries.',
+          keywords:
+            'car detailing before after, mobile detailing results, interior cleaning results, exterior detail results'
         };
       default:
         return {
-          title: 'Chrome Cousins - Premium Mobile Car Detailing',
-          description: 'Professional mobile car detailing services',
-          keywords: 'mobile car detailing, auto detailing'
+          title: 'FIVE-0 Auto Detail | Mobile Detailing Oklahoma',
+          description:
+            'Professional mobile car detailing services brought directly to you.',
+          keywords:
+            'mobile detailing, auto detailing, car cleaning'
         };
     }
   };
@@ -41,46 +49,42 @@ const SEO: React.FC = () => {
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      
+
       {/* Open Graph */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="Chrome Cousins" />
-      
-      {/* Twitter Card */}
+      <meta property="og:site_name" content="FIVE-0 Auto Detail" />
+      <meta property="og:url" content={`https://five0detail.com${location.pathname}`} />
+      <meta property="og:image" content="https://five0detail.com/og-image.jpg" />
+
+      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      
-      {/* JSON-LD Structured Data */}
+      <meta name="twitter:image" content="https://five0detail.com/og-image.jpg" />
+
+      {/* Structured Data */}
       {location.pathname === '/' && (
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
-            "name": "Chrome Cousins",
-            "description": "Premium mobile car detailing services",
-            "url": window.location.origin,
+            "name": "FIVE-0 Auto Detail",
+            "description": "Premium mobile car detailing and vehicle reset services",
+            "url": "https://five0detail.com",
             "telephone": "(915) 318-5633",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Metro Area",
-              "addressRegion": "State",
-              "postalCode": "12345",
-              "addressCountry": "US"
-            },
             "areaServed": {
-              "@type": "GeoCircle",
-              "geoMidpoint": {
-                "@type": "GeoCoordinates",
-                "latitude": "40.7128",
-                "longitude": "-74.0060"
-              },
-              "geoRadius": "25"
+              "@type": "Place",
+              "name": "Lawton, Oklahoma and surrounding 60 mile radius"
             },
-            "serviceType": ["Car Detailing", "Mobile Car Wash", "Ceramic Coating"],
-            "openingHours": "Mo,Tu,We,Th,Fr,Sa 08:00-18:00"
+            "serviceType": [
+              "Mobile Car Detailing",
+              "Interior Detailing",
+              "Exterior Detailing",
+              "Stain Extraction"
+            ],
+            "openingHours": "Mo,Tu,We,Th,Fr,Sa 07:00-19:00"
           })}
         </script>
       )}

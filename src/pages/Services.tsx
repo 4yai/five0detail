@@ -1,28 +1,28 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { CheckCircle, Phone, MessageSquare, Instagram, Clock, Shield } from 'lucide-react';
+import { Phone, MessageSquare, Instagram, Clock, Shield } from 'lucide-react';
 
 const BOOKING_LINK =
   'https://app.squareup.com/appointments/book/r9fqa859ot208j/LVJNFC13SX6J0/start';
 
 const Services: React.FC = () => {
-  // In-view tracking for staged reveals + skeletons
   const [packagesRef, packagesInView] = useInView({ threshold: 0.1, triggerOnce: true });
   const [addonsRef, addonsInView] = useInView({ threshold: 0.1, triggerOnce: true });
 
-  // ======== Pricing Data ========
   const sedanPackages = [
     {
       name: 'Patrol Package',
-      price: 89,
-      features: ['Basic wash', 'Hand dry', 'Wheels cleaned', 'Light interior vacuum'],
+      price: 199,
+      description:
+        'A full standard detail for sedans and coupes with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and the kind of full reset you expect from a solid detail.',
       popular: false,
     },
     {
       name: 'Task Force',
-      price: 149,
-      features: ['Premium wash', 'Interior wipe-down', 'Windows cleaned', 'Tire shine'],
+      price: 249,
+      description:
+        'Everything included in the Patrol Package, plus more extensive protection, added finish enhancement, and hydrophobic coating for a longer-lasting, more protected result.',
       popular: true,
     },
   ];
@@ -30,21 +30,23 @@ const Services: React.FC = () => {
   const truckPackages = [
     {
       name: 'Interceptor',
-      price: 109,
-      features: ['Basic wash', 'Hand dry', 'Wheels cleaned', 'Light interior vacuum'],
+      price: 249,
+      description:
+        'A full standard detail for trucks and SUVs with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and the normal detail work needed to bring the vehicle back to life.',
       popular: false,
     },
     {
       name: 'SWAT Team',
-      price: 179,
-      features: ['Premium wash', 'Interior wipe-down', 'Windows cleaned', 'Tire shine'],
+      price: 299,
+      description:
+        'Everything included in the Interceptor package, plus more extensive protection, added finish enhancement, and hydrophobic coating for a more complete premium result.',
       popular: true,
     },
   ];
 
   const addOns = [
     { name: 'Clay Barring', price: 49, description: 'Remove bonded contaminants from your paint for a smoother finish', comingSoon: false },
-    { name: 'K-9 Hair Sweep', price: 99, description: 'Pet hair removal and cleanup', comingSoon: false },
+    { name: 'Heavy Stain Extraction', price: 99, description: 'Targeted stain removal for deeper interior problem areas', comingSoon: false },
     { name: 'Rain Shield Coating', price: null, description: 'Hydrophobic protection for all windows', comingSoon: true },
     { name: 'Undercover Bay Detail', price: 99, description: 'Engine bay cleaning and dressing', comingSoon: false },
     { name: 'Night Vision Restore', price: null, description: 'Headlight clarity restoration', comingSoon: true },
@@ -101,7 +103,7 @@ const Services: React.FC = () => {
     pkg: {
       name: string;
       price: number;
-      features: string[];
+      description: string;
       popular: boolean;
     };
     index: number;
@@ -131,14 +133,9 @@ const Services: React.FC = () => {
         <div className="text-3xl font-extrabold text-blue-400 mb-2">${pkg.price}</div>
       </div>
 
-      <ul className="space-y-3 mb-8">
-        {pkg.features.map((feature, i) => (
-          <li key={i} className="flex items-start text-sm text-white/90">
-            <CheckCircle className="h-4 w-4 text-blue-400 mr-2 mt-0.5 flex-shrink-0" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="mb-8">
+        <p className="text-sm leading-7 text-white/90 text-center">{pkg.description}</p>
+      </div>
 
       <a
         href={BOOKING_LINK}
@@ -321,7 +318,7 @@ const Services: React.FC = () => {
               <h3 className="text-xl font-semibold mb-2 uppercase">Follow the Unit</h3>
               <div className="space-x-4">
                 <a
-                  href="https://www.instagram.com/chromecousins_detailing/"
+                  href="https://www.instagram.com/five0detail"
                   target="_blank"
                   rel="noreferrer"
                   className="text-blue-400 hover:text-blue-300"
