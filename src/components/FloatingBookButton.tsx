@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar } from 'lucide-react';
 
+const BOOKING_LINK =
+  'https://book.squareup.com/appointments/r9fqa859ot208j/location/LVJNFC13SX6J0/services';
+
 const FloatingBookButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -8,37 +11,16 @@ const FloatingBookButton: React.FC = () => {
     const toggleVisibility = () => {
       setIsVisible(window.pageYOffset > 300);
     };
-    toggleVisibility(); // set initial state on mount
+
+    toggleVisibility();
     window.addEventListener('scroll', toggleVisibility, { passive: true });
-    return () => window.removeEventListener('scroll', toggleVisibility as any);
+
+    return () => window.removeEventListener('scroll', toggleVisibility as EventListener);
   }, []);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-
-    // If we're already on /services and the target exists, smooth scroll.
-    const onServicesPage =
-      typeof window !== 'undefined' &&
-      window.location.pathname.replace(/\/+$/, '') === '/services';
-
-    const targetId = 'book';
-    const el = document.getElementById(targetId);
-
-    if (onServicesPage && el) {
-      // Smooth scroll to the booking section and update hash (no extra navigation)
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      // Update the URL hash without reloading or adding history entries
-      if (history.replaceState) {
-        history.replaceState(null, '', `#${targetId}`);
-      } else {
-        window.location.hash = `#${targetId}`;
-      }
-      return;
-    }
-
-    // Otherwise do a full navigation so the browser handles the #hash reliably.
-    // This avoids the "tap twice" behavior some mobile browsers have with SPA routing.
-    window.location.assign('/services#book');
+    window.open(BOOKING_LINK, '_blank', 'noopener,noreferrer');
   }, []);
 
   return (
