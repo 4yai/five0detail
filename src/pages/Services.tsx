@@ -12,6 +12,13 @@ const Services: React.FC = () => {
 
   const sedanPackages = [
     {
+      name: 'Interior Reset',
+      price: 169,
+      description:
+        'Interior-only service for sedans and coupes with vacuuming, wipe-down, glass cleaning, seats, carpets, cracks and crevices, and a solid interior refresh.',
+      popular: false,
+    },
+    {
       name: 'Patrol Package',
       price: 199,
       description:
@@ -20,7 +27,7 @@ const Services: React.FC = () => {
     },
     {
       name: 'Task Force',
-      price: 249,
+      price: 269,
       description:
         'Everything included in the Patrol Package, plus more extensive protection, added finish enhancement, and hydrophobic coating for a longer-lasting, more protected result.',
       popular: true,
@@ -28,6 +35,13 @@ const Services: React.FC = () => {
   ];
 
   const truckPackages = [
+    {
+      name: 'Interior Reset',
+      price: 219,
+      description:
+        'Interior-only service for trucks and SUVs with vacuuming, wipe-down, glass cleaning, seats, carpets, cracks and crevices, and a strong interior refresh.',
+      popular: false,
+    },
     {
       name: 'Interceptor',
       price: 249,
@@ -37,7 +51,7 @@ const Services: React.FC = () => {
     },
     {
       name: 'SWAT Team',
-      price: 299,
+      price: 319,
       description:
         'Everything included in the Interceptor package, plus more extensive protection, added finish enhancement, and hydrophobic coating for a more complete premium result.',
       popular: true,
@@ -45,12 +59,42 @@ const Services: React.FC = () => {
   ];
 
   const addOns = [
-    { name: 'Clay Barring', price: 49, description: 'Remove bonded contaminants from your paint for a smoother finish', comingSoon: false },
-    { name: 'Heavy Stain Extraction', price: 99, description: 'Targeted stain removal for deeper interior problem areas', comingSoon: false },
-    { name: 'Rain Shield Coating', price: null, description: 'Hydrophobic protection for all windows', comingSoon: true },
-    { name: 'Undercover Bay Detail', price: 99, description: 'Engine bay cleaning and dressing', comingSoon: false },
-    { name: 'Night Vision Restore', price: null, description: 'Headlight clarity restoration', comingSoon: true },
-    { name: 'Ceramic Coating', price: null, description: 'Long-term exterior protection and gloss boost', comingSoon: true },
+    {
+      name: 'Clay Barring',
+      price: 49,
+      description: 'Remove bonded contaminants from your paint for a smoother finish',
+      comingSoon: false,
+    },
+    {
+      name: 'Heavy Stain Extraction',
+      price: 99,
+      description: 'Targeted stain removal for deeper interior problem areas',
+      comingSoon: false,
+    },
+    {
+      name: 'Rain Shield Coating',
+      price: 39,
+      description: 'Hydrophobic protection for all windows',
+      comingSoon: false,
+    },
+    {
+      name: 'Undercover Bay Detail',
+      price: 99,
+      description: 'Engine bay cleaning and dressing',
+      comingSoon: false,
+    },
+    {
+      name: 'Night Vision Restore',
+      price: null,
+      description: 'Headlight clarity restoration',
+      comingSoon: true,
+    },
+    {
+      name: 'Ceramic Coating',
+      price: null,
+      description: 'Long-term exterior protection and gloss boost',
+      comingSoon: true,
+    },
   ];
 
   const CardSkeleton = ({ delay = 0 }: { delay?: number }) => (
@@ -190,8 +234,8 @@ const Services: React.FC = () => {
               <div className="text-center mb-8">
                 <div className="h-8 w-64 bg-white/10 rounded mx-auto animate-pulse" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
-                {[0, 1].map((i) => (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
+                {[0, 1, 2].map((i) => (
                   <CardSkeleton key={`sedan-skel-${i}`} delay={i * 0.1} />
                 ))}
               </div>
@@ -199,8 +243,8 @@ const Services: React.FC = () => {
               <div className="text-center mb-8">
                 <div className="h-8 w-64 bg-white/10 rounded mx-auto animate-pulse" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {[0, 1].map((i) => (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[0, 1, 2].map((i) => (
                   <CardSkeleton key={`truck-skel-${i}`} delay={i * 0.1} />
                 ))}
               </div>
@@ -220,7 +264,7 @@ const Services: React.FC = () => {
                 </div>
               </motion.div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
                 {sedanPackages.map((pkg, index) => (
                   <PackageCard key={pkg.name} pkg={pkg} index={index} />
                 ))}
@@ -239,9 +283,9 @@ const Services: React.FC = () => {
                 </div>
               </motion.div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {truckPackages.map((pkg, index) => (
-                  <PackageCard key={pkg.name} pkg={pkg} index={index + 2} />
+                  <PackageCard key={pkg.name} pkg={pkg} index={index + 3} />
                 ))}
               </div>
             </>
