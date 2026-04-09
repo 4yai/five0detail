@@ -17,6 +17,7 @@ const Services: React.FC = () => {
       description:
         'Interior-only service for sedans and coupes with vacuuming, wipe-down, glass cleaning, seats, carpets, cracks and crevices, and a solid interior refresh.',
       popular: false,
+      waxIncluded: false,
     },
     {
       name: 'Patrol Package',
@@ -24,6 +25,7 @@ const Services: React.FC = () => {
       description:
         'A full standard detail for sedans and coupes with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and the kind of full reset you expect from a solid detail.',
       popular: false,
+      waxIncluded: true,
     },
     {
       name: 'Task Force',
@@ -31,6 +33,7 @@ const Services: React.FC = () => {
       description:
         'Everything included in the Patrol Package, plus more extensive protection, added finish enhancement, and hydrophobic coating for a longer-lasting, more protected result.',
       popular: true,
+      waxIncluded: true,
     },
   ];
 
@@ -41,6 +44,7 @@ const Services: React.FC = () => {
       description:
         'Interior-only service for trucks and SUVs with vacuuming, wipe-down, glass cleaning, seats, carpets, cracks and crevices, and a strong interior refresh.',
       popular: false,
+      waxIncluded: false,
     },
     {
       name: 'Interceptor',
@@ -48,6 +52,7 @@ const Services: React.FC = () => {
       description:
         'A full standard detail for trucks and SUVs with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and the normal detail work needed to bring the vehicle back to life.',
       popular: false,
+      waxIncluded: true,
     },
     {
       name: 'SWAT Team',
@@ -55,13 +60,14 @@ const Services: React.FC = () => {
       description:
         'Everything included in the Interceptor package, plus more extensive protection, added finish enhancement, and hydrophobic coating for a more complete premium result.',
       popular: true,
+      waxIncluded: true,
     },
   ];
 
   const addOns = [
     {
       name: 'Clay Barring',
-      price: 49,
+      price: 99,
       description: 'Remove bonded contaminants from your paint for a smoother finish',
       comingSoon: false,
     },
@@ -73,7 +79,7 @@ const Services: React.FC = () => {
     },
     {
       name: 'Rain Shield Coating',
-      price: 39,
+      price: 89,
       description: 'Hydrophobic protection for all windows',
       comingSoon: false,
     },
@@ -149,6 +155,7 @@ const Services: React.FC = () => {
       price: number;
       description: string;
       popular: boolean;
+      waxIncluded: boolean;
     };
     index: number;
   }) => (
@@ -157,20 +164,30 @@ const Services: React.FC = () => {
       initial={{ y: 30, opacity: 0 }}
       animate={packagesInView ? { y: 0, opacity: 1 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className={`relative rounded-2xl p-6 bg-slate-950 border border-blue-400/10 hover:bg-slate-900 transition-all ${
-        pkg.popular ? 'ring-2 ring-blue-500' : ''
+      className={`relative rounded-2xl bg-slate-950 border border-blue-400/10 hover:bg-slate-900 transition-all px-6 pb-6 ${
+        pkg.popular ? 'ring-2 ring-blue-500 pt-10' : 'pt-6'
       }`}
       whileHover={{ y: -5 }}
     >
       {pkg.popular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-[0_0_16px_rgba(59,130,246,.35)]">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+          <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-[0_0_16px_rgba(59,130,246,.35)] whitespace-nowrap">
             Top Callout
           </span>
         </div>
       )}
 
-      <h3 className="text-2xl font-bold mb-4 text-center text-white">{pkg.name}</h3>
+      {pkg.waxIncluded && (
+        <div className="flex justify-end mb-3">
+          <span className="inline-flex items-center rounded-full border border-amber-300/30 bg-gradient-to-r from-amber-400 to-yellow-300 px-3 py-1 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.08em] text-slate-950 shadow-[0_0_18px_rgba(251,191,36,.28)] whitespace-nowrap">
+            Wax Included
+          </span>
+        </div>
+      )}
+
+      {!pkg.waxIncluded && <div className="mb-3 h-[30px]" />}
+
+      <h3 className="text-2xl font-bold mb-4 text-center text-white leading-tight">{pkg.name}</h3>
 
       <div className="text-center mb-6">
         <div className="text-sm text-white/60 mb-2">Starting at</div>
@@ -204,7 +221,7 @@ const Services: React.FC = () => {
             </p>
             <div className="bg-blue-500 text-white px-8 py-4 rounded-lg inline-flex items-center gap-3 text-lg font-semibold mb-4 shadow-[0_0_25px_rgba(59,130,246,.35)]">
               <Shield className="h-6 w-6" />
-              <span>No water or power on site? Our unit brings its own.</span>
+              <span>No water or power on site? Our unit can bring its own. </span>
             </div>
             <div className="max-w-3xl mx-auto bg-slate-950 border border-blue-500/20 rounded-xl px-6 py-4">
               <p className="text-sm md:text-base text-white/85">

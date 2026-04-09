@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import {
@@ -13,7 +13,10 @@ import {
   Shield,
   CarFront,
   Sparkles,
-  ScanSearch
+  ScanSearch,
+  X,
+  BadgePercent,
+  Star
 } from 'lucide-react';
 import TestimonialCard from '../components/TestimonialCard';
 
@@ -27,12 +30,39 @@ const Home: React.FC = () => {
   const [testimonialsRef, testimonialsInView] = useInView({ threshold: 0.12, triggerOnce: true });
 
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
 
   useEffect(() => {
     const img = new Image();
     img.src = 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1920&auto=format&fit=crop';
     img.onload = () => setHeroLoaded(true);
   }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setShowAnnouncementModal(true);
+    }, 250);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!showAnnouncementModal) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowAnnouncementModal(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [showAnnouncementModal]);
 
   const trustBadges = [
     { icon: MapPin, title: 'Oklahoma Mobile Unit', description: 'We come to you across Lawton and surrounding areas' },
@@ -179,7 +209,124 @@ const Home: React.FC = () => {
             repeating-linear-gradient(120deg, transparent 0 16px, rgba(255,255,255,.03) 16px 32px);
           pointer-events:none;
         }
+        .modal-panel-glow{
+          box-shadow:
+            0 0 0 1px rgba(59,130,246,0.16),
+            0 0 35px rgba(59,130,246,0.20),
+            0 12px 55px rgba(0,0,0,0.55);
+        }
       `}</style>
+
+      <AnimatePresence>
+        {showAnnouncementModal && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center px-3 sm:px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            aria-modal="true"
+            role="dialog"
+            aria-label="Five-0 Auto Detail announcements"
+          >
+            <button
+              type="button"
+              aria-label="Close announcement modal"
+              className="absolute inset-0 bg-black/75 backdrop-blur-[3px]"
+              onClick={() => setShowAnnouncementModal(false)}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 18 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97, y: 10 }}
+              transition={{ duration: 0.22 }}
+              className="relative z-[101] w-full max-w-lg overflow-hidden rounded-3xl border border-blue-400/20 bg-[rgba(2,6,23,0.96)] modal-panel-glow"
+            >
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/15 via-transparent to-cyan-400/10" />
+                <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.05),transparent_30%)]" />
+              </div>
+
+              <button
+                type="button"
+                aria-label="Close announcement modal"
+                onClick={() => setShowAnnouncementModal(false)}
+                className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/80 transition hover:bg-white/10 hover:text-white"
+              >
+                <X size={18} />
+              </button>
+
+              <div className="relative p-4 pt-5 sm:p-6 sm:pt-6">
+                <div className="mb-4 flex items-center gap-3 pr-10">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-500/15 border border-blue-400/20 shadow-[0_0_20px_rgba(59,130,246,.18)]">
+                    <Star className="h-6 w-6 text-blue-300" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-[0.26em] text-blue-300/90">Dispatch Update</p>
+                    <h2 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-white">
+                      New Offers Active
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="rounded-2xl border border-blue-400/15 bg-white/[0.03] p-4">
+                    <div className="mb-2 flex items-center gap-2">
+                      <BadgePercent className="h-5 w-5 text-blue-300" />
+                      <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wide text-white">
+                        Community Discount
+                      </h3>
+                    </div>
+                    <p className="text-sm sm:text-[15px] leading-6 text-white/80">
+                      We now offer a discount for military members, first responders, teachers, and healthcare workers as
+                      a thank you for the work you do. If that applies to you, mention it when booking and we will make
+                      sure it is applied to your service.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-cyan-400/15 bg-gradient-to-r from-blue-500/10 to-cyan-400/10 p-4">
+                    <div className="mb-2 flex items-center gap-2">
+                      <Siren className="h-5 w-5 text-cyan-300" />
+                      <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wide text-white">
+                        *NEW SERVICES*
+                      </h3>
+                    </div>
+                    <p className="text-base sm:text-lg font-bold text-white">
+                      Headlight Restoration is now available.
+                    </p>
+                    <p className="mt-2 text-sm sm:text-[15px] leading-6 text-white/80">
+                      If your headlights are foggy, hazy, or oxidized, this new service helps restore clarity, sharpen
+                      your front-end appearance, and improve the overall look of the vehicle.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setShowAnnouncementModal(false)}
+                    className="inline-flex w-full items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white/85 transition hover:bg-white/10 sm:w-auto"
+                  >
+                    Close
+                  </button>
+
+                  <Link
+                    to="/services"
+                    onClick={() => setShowAnnouncementModal(false)}
+                    className="inline-flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-sm font-extrabold text-white transition hover:bg-blue-500 shadow-[0_0_20px_rgba(59,130,246,.28)] sm:w-auto"
+                  >
+                    View Services
+                  </Link>
+                </div>
+
+                <p className="mt-3 text-center text-xs leading-5 text-white/45">
+                  Tap outside the panel, press escape, or use the close button to hide this message.
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* HERO */}
       <section ref={heroRef} className="relative min-h-[100svh] flex items-center justify-center">
