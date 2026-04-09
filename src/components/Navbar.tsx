@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="fixed top-0 left-0 right-0 z-[10000]"
+      className="fixed top-0 left-0 right-0 z-40"
     >
       <style>{`
         @keyframes blueSweep {
@@ -118,7 +118,6 @@ const Navbar: React.FC = () => {
               : 'py-3 px-3'
           ].join(' ')}
         >
-          {/* Brand */}
           <Link to="/" className="flex items-center gap-3 group relative z-10">
             <div className="relative">
               <img
@@ -146,7 +145,6 @@ const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-3 relative z-10">
             <div className="flex items-center gap-1 rounded-xl p-1 border border-blue-400/10 bg-black/20 backdrop-blur-sm">
               {navItems.map((item) => {
@@ -189,7 +187,6 @@ const Navbar: React.FC = () => {
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden relative z-10 rounded-lg p-2 border border-blue-400/10 bg-black/20 hover:bg-white/10 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -199,7 +196,6 @@ const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
