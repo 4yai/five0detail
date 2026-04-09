@@ -220,7 +220,7 @@ const Home: React.FC = () => {
       <AnimatePresence>
         {showAnnouncementModal && (
           <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center px-3 sm:px-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center px-3 py-4 sm:px-4 sm:py-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -240,7 +240,7 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.97, y: 10 }}
               transition={{ duration: 0.22 }}
-              className="relative z-[101] w-full max-w-lg overflow-hidden rounded-3xl border border-blue-400/20 bg-[rgba(2,6,23,0.96)] modal-panel-glow"
+              className="relative z-[10000] w-full max-w-lg max-h-[calc(100svh-2rem)] overflow-y-auto rounded-3xl border border-blue-400/20 bg-[rgba(2,6,23,0.96)] modal-panel-glow"
             >
               <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/15 via-transparent to-cyan-400/10" />
