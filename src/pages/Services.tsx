@@ -23,7 +23,7 @@ const Services: React.FC = () => {
       name: 'Patrol Package',
       price: 199,
       description:
-        'A full standard detail for sedans and coupes with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and the kind of full reset you expect from a solid detail.',
+        'A standard detail for sedans and coupes with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and a strong overall reset to bring the vehicle back to a clean, maintained condition.',
       popular: false,
       waxIncluded: true,
     },
@@ -31,7 +31,7 @@ const Services: React.FC = () => {
       name: 'Task Force',
       price: 269,
       description:
-        'Everything included in the Patrol Package, plus more extensive protection, added finish enhancement, and hydrophobic coating for a longer-lasting, more protected result.',
+        'Includes everything in the Patrol Package, plus added protection, finish enhancement, and a hydrophobic coating for longer-lasting shine and easier maintenance.',
       popular: true,
       waxIncluded: true,
     },
@@ -50,7 +50,7 @@ const Services: React.FC = () => {
       name: 'Interceptor',
       price: 249,
       description:
-        'A full standard detail for trucks and SUVs with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and the normal detail work needed to bring the vehicle back to life.',
+        'A standard detail for trucks and SUVs with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and the essential work needed to bring the vehicle back to a clean, presentable state.',
       popular: false,
       waxIncluded: true,
     },
@@ -58,7 +58,7 @@ const Services: React.FC = () => {
       name: 'SWAT Team',
       price: 319,
       description:
-        'Everything included in the Interceptor package, plus more extensive protection, added finish enhancement, and hydrophobic coating for a more complete premium result.',
+        'Includes everything in the Interceptor package, plus added protection, finish enhancement, and a hydrophobic coating for a more premium, longer-lasting result.',
       popular: true,
       waxIncluded: true,
     },
@@ -79,7 +79,7 @@ const Services: React.FC = () => {
     },
     {
       name: 'Rain Shield Coating',
-      price: 89,
+      price: 9,
       description: 'Hydrophobic protection for all windows',
       comingSoon: false,
     },
@@ -210,7 +210,7 @@ const Services: React.FC = () => {
   );
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 sm:pt-32 bg-black text-white">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-20 bg-black text-white">
       {/* Header */}
       <section className="py-16 bg-gradient-to-br from-black via-slate-950 to-black border-b border-blue-500/10">
         <div className="max-w-7xl mx-auto px-4 text-center">
@@ -355,7 +355,7 @@ const Services: React.FC = () => {
               <Phone className="h-12 w-12 text-blue-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 uppercase">Call Dispatch</h3>
               <a href="tel:9153185633" className="text-blue-400 hover:text-blue-300 text-lg font-medium">
-                (915) 318-5633
+                (609) 364-9259
               </a>
             </div>
 
