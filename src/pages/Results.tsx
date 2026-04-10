@@ -21,7 +21,7 @@ const Results: React.FC = () => {
       {/* YOUR NORMAL PAGE CONTENT STAYS HERE */}
 
       {/* FIXED UNDER CONSTRUCTION OVERLAY */}
-      <div className="fixed inset-x-0 bottom-0 top-[120px] sm:top-[140px] z-[900] flex items-center justify-center backdrop-blur-xl bg-black/70">
+      <div className="fixed inset-x-0 bottom-0 top-[120px] sm:top-[140px] z-20 flex items-center justify-center backdrop-blur-xl bg-black/70">
         <div className="text-center px-6">
           <h1 className="text-4xl md:text-6xl font-black tracking-[0.2em] uppercase text-white mb-6">
             UNDER CONSTRUCTION
