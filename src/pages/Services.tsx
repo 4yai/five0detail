@@ -210,7 +210,7 @@ const Services: React.FC = () => {
   );
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-20 bg-black text-white">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 sm:pt-32 bg-black text-white">
       {/* Header */}
       <section className="py-16 bg-gradient-to-br from-black via-slate-950 to-black border-b border-blue-500/10">
         <div className="max-w-7xl mx-auto px-4 text-center">
