@@ -79,7 +79,7 @@ const Services: React.FC = () => {
     },
     {
       name: 'Rain Shield Coating',
-      price: 9,
+      price: 99,
       description: 'Hydrophobic protection for all windows',
       comingSoon: false,
     },
@@ -91,9 +91,9 @@ const Services: React.FC = () => {
     },
     {
       name: 'Night Vision Restore',
-      price: null,
+      price: 75,
       description: 'Headlight clarity restoration',
-      comingSoon: true,
+      comingSoon: false,
     },
     {
       name: 'Ceramic Coating',
