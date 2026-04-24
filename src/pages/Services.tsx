@@ -12,93 +12,99 @@ const Services: React.FC = () => {
 
   const sedanPackages = [
     {
-      name: 'Interior Reset',
-      price: 169,
-      description:
-        'Interior-only service for sedans and coupes with vacuuming, wipe-down, glass cleaning, seats, carpets, cracks and crevices, and a solid interior refresh.',
-      popular: false,
-      waxIncluded: false,
-    },
-    {
       name: 'Patrol Package',
-      price: 199,
+      price: 109,
+      time: '1.5-2 hours',
       description:
-        'A standard detail for sedans and coupes with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and a strong overall reset to bring the vehicle back to a clean, maintained condition.',
+        'A clean maintenance detail for sedans and coupes. Includes exterior wash, hand dry, wheels, tires, interior vacuum, surface wipe down, and streak-free windows.',
       popular: false,
-      waxIncluded: true,
+      badge: 'WAX INCLUDED',
     },
     {
       name: 'Task Force',
-      price: 269,
+      price: 149,
+      time: '2.5-3 hours',
       description:
-        'Includes everything in the Patrol Package, plus added protection, finish enhancement, and a hydrophobic coating for longer-lasting shine and easier maintenance.',
+        'Our most balanced service. Includes everything in Patrol, plus deeper interior attention, cracks and crevices, light stain treatment, trim refresh, and gloss-enhancing spray protection.',
       popular: true,
-      waxIncluded: true,
+      badge: 'MOST BOOKED',
+    },
+    {
+      name: 'SWAT Detail',
+      price: 199,
+      time: '3-4 hours',
+      description:
+        'Built for vehicles that need a stronger reset. Includes everything in Task Force, plus carpet and seat extraction, stain treatment, enhanced protection, and extra detail work throughout.',
+      popular: false,
+      badge: 'BEST VALUE',
     },
   ];
 
   const truckPackages = [
     {
-      name: 'Interior Reset',
-      price: 219,
-      description:
-        'Interior-only service for trucks and SUVs with vacuuming, wipe-down, glass cleaning, seats, carpets, cracks and crevices, and a strong interior refresh.',
-      popular: false,
-      waxIncluded: false,
-    },
-    {
       name: 'Interceptor',
-      price: 249,
+      price: 119,
+      time: '1.5-2.5 hours',
       description:
-        'A standard detail for trucks and SUVs with exterior cleaning, interior cleaning, seats, carpets, glass, cracks and crevices, refreshening, and the essential work needed to bring the vehicle back to a clean, presentable state.',
+        'A clean maintenance detail for trucks and SUVs. Includes exterior wash, hand dry, wheels, tires, interior vacuum, surface wipe down, and streak-free windows.',
       popular: false,
-      waxIncluded: true,
+      badge: 'WAX INCLUDED',
     },
     {
-      name: 'SWAT Team',
-      price: 319,
+      name: 'Task Force',
+      price: 169,
+      time: '2.5-3.5 hours',
       description:
-        'Includes everything in the Interceptor package, plus added protection, finish enhancement, and a hydrophobic coating for a more premium, longer-lasting result.',
+        'Our most balanced truck and SUV service. Includes everything in Interceptor, plus deeper interior attention, cracks and crevices, light stain treatment, trim refresh, and gloss-enhancing spray protection.',
       popular: true,
-      waxIncluded: true,
+      badge: 'MOST BOOKED',
+    },
+    {
+      name: 'SWAT Detail',
+      price: 219,
+      time: '3.5-4.5 hours',
+      description:
+        'For larger vehicles that need a stronger reset. Includes everything in Task Force, plus carpet and seat extraction, stain treatment, enhanced protection, and extra detail work throughout.',
+      popular: false,
+      badge: 'BEST VALUE',
     },
   ];
 
   const addOns = [
     {
-      name: 'Clay Barring',
-      price: 99,
-      description: 'Remove bonded contaminants from your paint for a smoother finish',
-      comingSoon: false,
-    },
-    {
       name: 'Heavy Stain Extraction',
-      price: 99,
-      description: 'Targeted stain removal for deeper interior problem areas',
+      price: '$40-$80',
+      description: 'Targeted stain work for carpets, seats, and deeper interior problem areas.',
       comingSoon: false,
     },
     {
-      name: 'Rain Shield Coating',
-      price: 99,
-      description: 'Hydrophobic protection for all windows',
-      comingSoon: false,
-    },
-    {
-      name: 'Undercover Bay Detail',
-      price: 99,
-      description: 'Engine bay cleaning and dressing',
+      name: 'Pet Hair Removal',
+      price: '$25-$50',
+      description: 'Extra removal work for embedded pet hair in carpets, seats, and cargo areas.',
       comingSoon: false,
     },
     {
       name: 'Night Vision Restore',
-      price: 75,
-      description: 'Headlight clarity restoration',
+      price: '$50-$80',
+      description: 'Headlight restoration to improve clarity and bring back a cleaner look.',
+      comingSoon: false,
+    },
+    {
+      name: '1-Step Paint Enhancement',
+      price: '$100-$150',
+      description: 'Machine polish service to improve gloss and reduce light swirls on paint.',
+      comingSoon: false,
+    },
+    {
+      name: 'Undercover Bay Detail',
+      price: '$40-$60',
+      description: 'Safe engine bay cleaning and plastic dressing for a cleaner under-hood appearance.',
       comingSoon: false,
     },
     {
       name: 'Ceramic Coating',
       price: null,
-      description: 'Long-term exterior protection and gloss boost',
+      description: 'Longer-term exterior protection and gloss boost.',
       comingSoon: true,
     },
   ];
@@ -153,9 +159,10 @@ const Services: React.FC = () => {
     pkg: {
       name: string;
       price: number;
+      time: string;
       description: string;
       popular: boolean;
-      waxIncluded: boolean;
+      badge: string;
     };
     index: number;
   }) => (
@@ -177,24 +184,29 @@ const Services: React.FC = () => {
         </div>
       )}
 
-      {pkg.waxIncluded && (
-        <div className="flex justify-end mb-3">
-          <span className="inline-flex items-center rounded-full border border-amber-300/30 bg-gradient-to-r from-amber-400 to-yellow-300 px-3 py-1 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.08em] text-slate-950 shadow-[0_0_18px_rgba(251,191,36,.28)] whitespace-nowrap">
-            Wax Included
-          </span>
-        </div>
-      )}
-
-      {!pkg.waxIncluded && <div className="mb-3 h-[30px]" />}
+      <div className="flex justify-end mb-3">
+        <span
+          className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.08em] whitespace-nowrap ${
+            pkg.badge === 'MOST BOOKED'
+              ? 'border border-blue-300/30 bg-blue-500 text-white shadow-[0_0_18px_rgba(59,130,246,.28)]'
+              : pkg.badge === 'BEST VALUE'
+                ? 'border border-white/15 bg-white/10 text-blue-200'
+                : 'border border-amber-300/30 bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 shadow-[0_0_18px_rgba(251,191,36,.28)]'
+          }`}
+        >
+          {pkg.badge}
+        </span>
+      </div>
 
       <h3 className="text-2xl font-bold mb-4 text-center text-white leading-tight">{pkg.name}</h3>
 
       <div className="text-center mb-6">
         <div className="text-sm text-white/60 mb-2">Starting at</div>
         <div className="text-3xl font-extrabold text-blue-400 mb-2">${pkg.price}</div>
+        <div className="text-xs uppercase tracking-[0.12em] text-white/45">{pkg.time}</div>
       </div>
 
-      <div className="mb-8">
+      <div className="mb-8 min-h-[170px]">
         <p className="text-sm leading-7 text-white/90 text-center">{pkg.description}</p>
       </div>
 
@@ -221,7 +233,7 @@ const Services: React.FC = () => {
             </p>
             <div className="bg-blue-500 text-white px-8 py-4 rounded-lg inline-flex items-center gap-3 text-lg font-semibold mb-4 shadow-[0_0_25px_rgba(59,130,246,.35)]">
               <Shield className="h-6 w-6" />
-              <span>No water or power on site? Our unit can bring its own. </span>
+              <span>Don't want to leave home? Our unit comes to you!</span>
             </div>
             <div className="max-w-3xl mx-auto bg-slate-950 border border-blue-500/20 rounded-xl px-6 py-4">
               <p className="text-sm md:text-base text-white/85">
@@ -272,6 +284,51 @@ const Services: React.FC = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={packagesInView ? { y: 0, opacity: 1 } : {}}
                 transition={{ duration: 0.5 }}
+                className="mb-14"
+              >
+                <div className="relative max-w-4xl mx-auto bg-slate-950 border border-blue-500/20 rounded-2xl p-6 md:p-8 text-center overflow-hidden">
+                  <div className="absolute inset-0 pointer-events-none opacity-20">
+                    <div className="w-full h-full bg-gradient-to-r from-blue-500/10 via-transparent to-blue-500/10" />
+                  </div>
+
+                  <div className="relative">
+                    <div className="inline-flex items-center gap-3 mb-4">
+                      <div className="h-px w-10 bg-blue-500/60" />
+                      <span className="text-sm uppercase tracking-[0.12em] text-blue-400 font-semibold">
+                        Quick Service Option
+                      </span>
+                      <div className="h-px w-10 bg-blue-500/60" />
+                    </div>
+
+                    <h3 className="text-2xl md:text-3xl font-bold mb-3 uppercase">Express Wash</h3>
+
+                    <p className="text-white/75 mb-6 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+                      Built for maintenance between details. A fast reset for vehicles that need a cleaner look without
+                      the time commitment of a larger service.
+                    </p>
+
+                    <div className="text-4xl font-extrabold text-blue-400 mb-4">$70</div>
+
+                    <p className="text-sm text-white/80 mb-6">
+                      Includes quick vacuum, interior wipe down, exterior wash, and air freshener finish.
+                    </p>
+
+                    <a
+                      href={BOOKING_LINK}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-block bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-semibold transition-colors shadow-[0_0_16px_rgba(59,130,246,.35)]"
+                    >
+                      Book Express
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={packagesInView ? { y: 0, opacity: 1 } : {}}
+                transition={{ duration: 0.5 }}
                 className="text-center mb-8"
               >
                 <div className="inline-flex items-center gap-4 mb-3">
@@ -315,7 +372,7 @@ const Services: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4 uppercase">Special Ops Add-Ons</h2>
-            <p className="text-xl text-white/70">Optional upgrades to tighten up the final result</p>
+            <p className="text-xl text-white/70">Optional upgrades for problem areas, extra gloss, and deeper results</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -337,7 +394,7 @@ const Services: React.FC = () => {
                           Coming Soon
                         </span>
                       ) : (
-                        <span className="text-xl font-bold text-blue-400">+${addon.price}</span>
+                        <span className="text-xl font-bold text-blue-400">+{addon.price}</span>
                       )}
                     </div>
                     <p className="text-white/70 text-sm">{addon.description}</p>
@@ -354,7 +411,7 @@ const Services: React.FC = () => {
             <div className="text-center">
               <Phone className="h-12 w-12 text-blue-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 uppercase">Call Dispatch</h3>
-              <a href="tel:9153185633" className="text-blue-400 hover:text-blue-300 text-lg font-medium">
+              <a href="tel:6093649259" className="text-blue-400 hover:text-blue-300 text-lg font-medium">
                 (609) 364-9259
               </a>
             </div>
@@ -362,7 +419,7 @@ const Services: React.FC = () => {
             <div className="text-center">
               <MessageSquare className="h-12 w-12 text-blue-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 uppercase">Text Dispatch</h3>
-              <a href="sms:9153185633" className="text-blue-400 hover:text-blue-300 text-lg font-medium">
+              <a href="sms:6093649259" className="text-blue-400 hover:text-blue-300 text-lg font-medium">
                 (609) 364-9259
               </a>
             </div>
