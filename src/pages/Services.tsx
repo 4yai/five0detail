@@ -93,7 +93,7 @@ const Services: React.FC = () => {
       name: '1-Step Paint Enhancement',
       price: '$100-$150',
       description: 'Machine polish service to improve gloss and reduce light swirls on paint.',
-      comingSoon: false,
+      comingSoon: true,
     },
     {
       name: 'Undercover Bay Detail',
@@ -103,9 +103,9 @@ const Services: React.FC = () => {
     },
     {
       name: 'Ceramic Coating',
-      price: null,
+      price: '$99',
       description: 'Longer-term exterior protection and gloss boost.',
-      comingSoon: true,
+      comingSoon: false,
     },
   ];
 
